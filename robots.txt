@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gokturkce.oguzkaanekin.site/sitemap.xml
