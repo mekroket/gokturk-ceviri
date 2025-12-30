@@ -6,6 +6,9 @@
 
 Latin harfli Türkçe metinlerinizi, dilimizin bilinen en eski yazılı kaynağı olan **Göktürk (Orhun) Alfabesine** çeviren, büyük ünlü uyumuna dikkat eden akıllı bir PHP kütüphanesi ve modern web arayüzü.
 
+## 🔗 Canlı Yayın
+Projeyi anlık olarak buradan deneyebilirsiniz: **[gokturk.oguzkaanekin.site](https://gokturk.oguzkaanekin.site)**
+
 ## 🌟 Özellikler
 
 *   **🧠 Akıllı Dönüşüm:** Sadece harf harf çeviri yapmaz; **Büyük Ünlü Uyumu** kurallarını (Kalın/İnce) analiz ederek doğru damgaları (runeleri) seçer. (Örn: 'K' harfi ince ünlülerle `𐰚`, kalın ünlülerle `𐰴` olur).
