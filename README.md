@@ -1,6 +1,6 @@
 # 𐱅𐰇𐰼𐰚 - Göktürkçe Çeviri Kütüphanesi & Web Arayüzü
 
-![Göktürkçe Banner](https://gokturkce.oguzkaanekin.site/assets/og-image.jpg)
+![Göktürkçe Banner](https://github.com/mekroket/gokturk-ceviri/blob/main/5.png)
 
 > **"Üstte mavi gök, altta yağız yer kılındıkta..."**
 
