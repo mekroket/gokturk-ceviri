@@ -363,6 +363,77 @@ $alphabet = [
             color: #fff !important;
         }
 
+        /* Mode Toggle */
+        .mode-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .mode-label {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .mode-label.active {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--primary);
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
         .alphabet-section h2 {
             font-family: 'Orbitron', sans-serif;
             color: var(--accent);
@@ -527,9 +598,19 @@ $alphabet = [
             <div class="corner-decoration bl"></div>
             <div class="corner-decoration br"></div>
 
+            <div class="mode-toggle">
+                <span id="label-latin" class="mode-label active">LATİN</span>
+                <label class="switch">
+                    <input type="checkbox" id="directionToggle" onchange="updateMode()">
+                    <span class="slider"></span>
+                </label>
+                <span id="label-gokturk" class="mode-label">GÖKTÜRK</span>
+            </div>
+
             <form id="converterForm" onsubmit="event.preventDefault(); convertText();">
                 <textarea id="inputText" name="text"
-                    placeholder="Metni buraya girin (Örn: Türk, Tanrı, Kut, Bilge)..."></textarea>
+                    placeholder="Metni buraya girin (Örn: Türk, Tanrı, Kut, Bilge)..."
+                    oninput="convertText()"></textarea>
                 <button type="submit">ÇEVİR</button>
             </form>
 
@@ -614,9 +695,40 @@ $alphabet = [
             }
         }
 
+        function updateMode() {
+            const isGokturkToLatin = document.getElementById('directionToggle').checked;
+            const labelLatin = document.getElementById('label-latin');
+            const labelGokturk = document.getElementById('label-gokturk');
+            const inputText = document.getElementById('inputText');
+            const resultText = document.getElementById('result');
+
+            if (isGokturkToLatin) {
+                labelLatin.classList.remove('active');
+                labelGokturk.classList.add('active');
+                inputText.placeholder = "Göktürkçe metni buraya girin (Örn: 𐱅𐰇𐰼𐰚)...";
+                resultText.style.fontFamily = "'Cinzel', serif";
+            } else {
+                labelLatin.classList.add('active');
+                labelGokturk.classList.remove('active');
+                inputText.placeholder = "Metni buraya girin (Örn: Türk, Tanrı, Kut, Bilge)...";
+                resultText.style.fontFamily = "'Orkhon', 'Segoe UI Historic', sans-serif";
+            }
+            
+            // Clear or re-convert
+            if (inputText.value) {
+                convertText();
+            }
+        }
+
         async function convertText() {
             const text = document.getElementById('inputText').value;
-            if (!text) return;
+            const isGokturkToLatin = document.getElementById('directionToggle').checked;
+            const direction = isGokturkToLatin ? 'gokturk-to-latin' : 'latin-to-gokturk';
+
+            if (!text) {
+                document.getElementById('resultArea').style.display = 'none';
+                return;
+            }
 
             try {
                 const response = await fetch('convert.php', {
@@ -624,7 +736,10 @@ $alphabet = [
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ text: text }),
+                    body: JSON.stringify({ 
+                        text: text,
+                        direction: direction
+                    }),
                 });
 
                 const data = await response.json();
@@ -634,11 +749,9 @@ $alphabet = [
                     document.getElementById('resultArea').style.display = 'flex'; // Show the result area
                 } else {
                     console.error('Conversion failed:', data.message);
-                    // Optionally display an error message to the user
                 }
             } catch (error) {
                 console.error('Error:', error);
-                // Optionally display a network error message to the user
             }
         }
 
