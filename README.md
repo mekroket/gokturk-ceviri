@@ -11,7 +11,8 @@ Projeyi anlık olarak buradan deneyebilirsiniz: **[gokturk.oguzkaanekin.site](ht
 
 ## 🌟 Özellikler
 
-*   **🧠 Akıllı Dönüşüm:** Sadece harf harf çeviri yapmaz; **Büyük Ünlü Uyumu** kurallarını (Kalın/İnce) analiz ederek doğru damgaları (runeleri) seçer. (Örn: 'K' harfi ince ünlülerle `𐰚`, kalın ünlülerle `𐰴` olur).
+*   **🧠 Akıllı Dönüşüm:** Sadece harf harf çeviri yapmaz; **Büyük Ünlü Uyumu** kurallarını (Kalın/İnce) analiz ederek doğru damgaları (runeleri) seçer.
+*   **🔄 Çift Yönlü Çeviri:** Sadece Latin'den Göktürkçe'ye değil, Göktürkçe'den Latin'e de çeviri yapabilir. Göktürkçe metindeki ünsüz uyumuna bakarak doğru Latin ünlülerini tahmin eder.
 *   **🎨 Cyber-Turkic Tasarım:** Tarihsel motifleri (Bozkurt, kilim desenleri) modern "Cyberpunk" estetiğiyle (Neon yeşil, cam efektleri) birleştiren eşsiz arayüz.
 *   **🎵 Atmosferik Müzik:** Arkaplanda "Er Turan - Türk Kanı" parçası ile tam bir atmosfer sunar. (Otomatik sessizlik atlama ve döngü özelliği).
 *   **⚡ Anlık Çeviri (AJAX):** Sayfa yenilenmeden, yazdığınız anda çeviri yapar.
@@ -48,8 +49,11 @@ use OguzKaan\Gokturk\Converter;
 
 $cevirici = new Converter();
 
+// Latin -> Göktürkçe
 echo $cevirici->convert("Türk");  // Çıktı: 𐱅𐰇𐰼𐰚
-echo $cevirici->convert("Bilge"); // Çıktı: 𐰋𐰃𐰠𐰏𐰀
+
+// Göktürkçe -> Latin
+echo $cevirici->reverseConvert("𐱅𐰇𐰼𐰚"); // Çıktı: türk
 ```
 
 ## 🌐 API Kullanımı
@@ -57,12 +61,12 @@ echo $cevirici->convert("Bilge"); // Çıktı: 𐰋𐰃𐰠𐰏𐰀
 Proje, AJAX istekleri için basit bir JSON API sunar:
 
 *   **Endpoint:** `POST /convert.php`
-*   **Body:** `{"text": "Merhaba"}`
+*   **Body:** `{"text": "𐱅𐰇𐰼𐰚", "direction": "gokturk-to-latin"}`
 *   **Response:**
     ```json
     {
         "success": true,
-        "result": "𐰢𐰼𐰚𐰀𐰉𐰀"
+        "result": "türk"
     }
     ```
 
